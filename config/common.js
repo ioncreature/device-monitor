@@ -13,7 +13,7 @@ exports.cookieTtl = 6 * 3600 * 1000;
 
 exports.proxyUsed = false;
 
-exports.screenshotDir = join( __dirname, '../public/screenshot' );
+exports.screenshotDir = join( __dirname, '../ScreenShots' );
 
 exports.route = {
     INDEX: '/',
