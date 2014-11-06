@@ -1,0 +1,101 @@
+/**
+ * @author Alexander Marenin
+ * @date July 2014
+ */
+
+
+#main-menu {
+    border-radius: 0;
+    background-color: @color-smoke;
+    border: 0;
+    font-family: 'Open Sans Condensed', 'Open Sans Light', Tahoma;
+
+    a {
+        color: @color-north-sea;
+    }
+
+    a#logo {
+        font-size: 30px;
+    }
+
+    #main-nav {
+        font-size: 22px;
+        border: 0;
+
+        ul {
+            margin-bottom: 0;
+        }
+
+        li > a {
+            padding-top: 18px;
+            padding-bottom: 18px;
+            margin-bottom: 0px;
+        }
+
+        li.active > a, li:hover > a {
+            background-color: @color-platinum;
+        }
+    }
+
+    body.users & {
+        .colorize-menu(@color-light-orange);
+    }
+    body.issuers & {
+        .colorize-menu(@color-light-green);
+    }
+    body.cards & {
+        .colorize-menu(@color-light-blue2);
+    }
+    body.account & {
+        .colorize-menu(@color-light-violet);
+    }
+    body.error & {
+        .colorize-menu(@color-light-red);
+    }
+
+    .colorize-menu( @color ){
+        background-color: @color;
+        a {
+            color: darken(@color, 50%);
+        }
+        #main-nav li.active > a, #main-nav li:hover > a, button.navbar-toggle {
+            background-color: darken(@color, 10%);
+            border-color: darken(@color, 25%);
+            span {
+                background-color: darken(@color, 45%);
+            }
+        }
+    }
+}
+
+
+#main-content {
+    padding-bottom: 20px;
+
+    .buttons-block {
+        overflow: hidden;
+        margin-bottom: 24px;
+
+        h2, h3 {
+            float: left;
+        }
+
+        & > .header-controls {
+            float: right;
+            & > * {
+                float: right;
+                margin: 20px 0 10px 10px;
+            }
+        }
+    }
+}
+
+
+#error-message {
+    text-align: center;
+    padding: 2em 0;
+    span {
+        font-size: 10em;
+        color: darken(@color-light-red, 20%);
+    }
+}

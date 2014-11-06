@@ -1,0 +1,95 @@
+/**
+ * @author Alexander Marenin
+ * @date July 2014
+ */
+
+body {
+    font-size: @font-size-text;
+    font-family: @font-family-common;
+    color: @color-text;
+    -webkit-text-stroke: 0.2px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.header, h1, h2, h3, h4 {
+    font-family: @font-family-header, @font-family-common;
+}
+
+h3 {
+    font-size: 22px;
+}
+
+form label {
+    font-weight: normal;
+}
+
+.center {
+    text-align: center;
+}
+
+.offset-top {
+    margin-top: 20px;
+}
+
+span.glyphicon {
+    color: @color-slate;
+}
+
+tr > th {
+    font-weight: normal;
+    font-family: @font-family-header;
+    font-size: 1.4em;
+}
+
+th.short, td.short {
+    width: 10%;
+    min-width: 100px;
+}
+
+.panel {
+    &.green {
+        .colorize-panel( @color-light-green );
+    }
+    &.blue {
+        .colorize-panel( @color-light-blue );
+    }
+    &.blue2 {
+        .colorize-panel( @color-light-blue2 );
+    }
+    &.yellow {
+        .colorize-panel( @color-light-yellow );
+    }
+    &.orange {
+        .colorize-panel( @color-light-orange );
+    }
+    &.violet {
+        .colorize-panel( @color-light-violet );
+    }
+    &.purple {
+        .colorize-panel( @color-light-purple );
+    }
+    &.red {
+        .colorize-panel( @color-light-red );
+    }
+    &.berry-red {
+        .colorize-panel( @color-light-berry-red );
+    }
+}
+
+span.badge {
+    margin-right: 3px;
+}
+
+
+.value-block {
+    overflow: hidden;
+    margin: 10px 0;
+    .caption {
+        float: left;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    .value {
+        float: left;
+    }
+}

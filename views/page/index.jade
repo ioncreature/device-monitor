@@ -1,0 +1,12 @@
+// @author Alexander Marenin
+// @date November 2014
+
+extends ../layout
+
+block content
+    each img, index in images
+        if index % 6 === 0
+            .row
+                each img in images.slice(index, index + 6)
+                    .col-sm-2
+                        img.img-responsive(src=img)

@@ -1,0 +1,29 @@
+/**
+ * @author Alexander Marenin
+ * @date September 2014
+ */
+
+.colorize-panel( @color ){
+    border-color: darken(@color, 10%);
+    color: darken(@color, 60%);
+
+    & > .panel-heading {
+        font-family: @font-family-header;
+        font-size: 1.4em;
+        color: darken(@color, 60%);
+        background-color: @color;
+        border-color: darken(@color, 10%);
+    }
+
+    .list-group-item {
+        overflow: hidden;
+        border-color: darken(@color, 10%);
+        a {
+            color: inherit;
+        }
+        .value {
+            float: right;
+            font-weight: bold;
+        }
+    }
+}

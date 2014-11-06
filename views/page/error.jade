@@ -1,0 +1,12 @@
+// @author Alexander Marenin
+// @date November 2014
+
+extends ../layout
+
+block content
+    h3= message + ' ' + (error.status || '')
+    if error
+        pre #{error.stack}
+    else
+        p#error-message
+            span.glyphicon.glyphicon-warning-sign
