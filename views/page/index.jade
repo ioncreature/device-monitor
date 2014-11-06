@@ -9,4 +9,6 @@ block content
             .row
                 each img in images.slice(index, index + 6)
                     .col-sm-2
-                        img.img-responsive(src=img)
+                        h4= img.name
+                            .right= img.elapsed
+                        img.img-responsive(src=img.url)

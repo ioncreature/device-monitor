@@ -20,12 +20,24 @@ module.exports = router;
 router.get( route.INDEX, function( req, res ){
     var list = fs.readdirSync( config.screenshotDir );
 
-    res.render( 'page/index', {
-        pageName: 'index',
-        images: list.map( function( item ){
-            return util.formatUrl( route.DEVICE_SCREENSHOT, {name: item} );
-        })
-    });
+    async.map( list,
+        function( item, cb ){
+            fs.stat( join(config.screenshotDir, item), cb );
+        },
+        function( error, stats ){
+            var now = Date.now();
+            res.render( 'page/index', {
+                pageName: 'index',
+                images: stats.map( function( stat, i ){
+                    return {
+                        name: list[i],
+                        url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: list[i]} ),
+                        elapsed: makeTime( now - stat.mtime.getTime() )
+                    };
+                })
+            });
+        }
+    );
 });
 
 
@@ -38,9 +50,16 @@ router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
     if ( fileName ){
         res.type( mime.lookup(fileName) );
         res.set( 'Content-Disposition', 'filename="' + fileName + '"' );
-        console.log( fileName );
         res.send( fs.readFileSync(fileName) );
     }
     else
         next( new httpError.NotFound );
 });
+
+
+function makeTime( time ){
+    var hours = Math.floor( time/ (3600 * 1000) ),
+        minutes = Math.floor( time % (3600 * 1000) / (60 * 1000) ),
+        seconds = Math.floor( time % (3600 * 1000) % (60 * 1000) / 1000 );
+    return hours + 'h ' + minutes + 'm ' + seconds + 's'
+}

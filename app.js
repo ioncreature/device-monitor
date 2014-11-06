@@ -22,6 +22,17 @@ process.title = config.processTitle;
 registry.set( 'config', config );
 
 
+var ScreenShoter = require( './lib/ScreenShoter' ),
+    screenShoter = new ScreenShoter({
+        stdoutPath: config.stdoutPath,
+        stderrPath: config.stderrPath,
+        screenshoterPath: config.screenshoterPath,
+        outDir: config.outDir
+    });
+registry.set( 'screenShoter', screenShoter );
+screenShoter.startLoop( config.screenshoterInterval );
+
+
 var server = require( './lib/webServer' );
 server( function( error ){
     if ( error )
