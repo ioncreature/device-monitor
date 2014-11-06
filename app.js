@@ -27,8 +27,7 @@ var ScreenShooter = require( './lib/ScreenShooter' ),
     screenShooter = new ScreenShooter({
         stdoutPath: config.stdoutPath,
         stderrPath: config.stderrPath,
-        screenshoterPath: config.screenshoterPath,
-        outDir: config.screenshotDir
+        screenshoterPath: config.screenshoterPath
     });
 registry.set( 'screenShooter', screenShooter );
 

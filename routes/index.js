@@ -32,7 +32,8 @@ router.get( route.INDEX, function( req, res ){
                     return {
                         name: list[i],
                         url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: list[i]} ),
-                        elapsed: makeTime( now - stat.mtime.getTime() )
+                        elapsed: makeTime( now - stat.mtime.getTime() ),
+                        old: now - stat.mtime.getTime() > config.screenshoterInterval
                     };
                 })
             });
