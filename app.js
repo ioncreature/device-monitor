@@ -13,7 +13,8 @@ var program = require( 'commander' ),
 program
     .version( packageInfo.version )
     .usage( '[options]' )
-    .option( '-c, --config [name]', 'set the config name to use, default is "dev"', 'dev' );
+    .option( '-c, --config [name]', 'set the config name to use, default is "dev"', 'dev' )
+    .option( '-s, --screenshot', 'make screenshots' );
 
 
 program.parse( process.argv );
@@ -22,21 +23,30 @@ process.title = config.processTitle;
 registry.set( 'config', config );
 
 
-var ScreenShoter = require( './lib/ScreenShoter' ),
-    screenShoter = new ScreenShoter({
+var ScreenShooter = require( './lib/ScreenShooter' ),
+    screenShooter = new ScreenShooter({
         stdoutPath: config.stdoutPath,
         stderrPath: config.stderrPath,
         screenshoterPath: config.screenshoterPath,
         outDir: config.outDir
     });
-registry.set( 'screenShoter', screenShoter );
-screenShoter.startLoop( config.screenshoterInterval );
+registry.set( 'screenShooter', screenShooter );
 
+if ( program.screenshot ){
+    console.log( 'start collecting' );
+    screenShooter.collect( function(){
+        console.log( 'Collecting finished' );
+        process.exit();
+    });
+}
+else {
+    screenShooter.startLoop( config.screenshoterInterval );
+    var server = require( './lib/webServer' );
+    server( function( error ){
+        if ( error )
+            util.abort( error );
+        else
+            console.log( 'Server listening on port %s', config.port );
+    });
+}
 
-var server = require( './lib/webServer' );
-server( function( error ){
-    if ( error )
-        util.abort( error );
-    else
-        console.log( 'Server listening on port %s', config.port );
-});

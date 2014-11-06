@@ -3,11 +3,13 @@
  * @date November 2014
  */
 
+var join = require( 'path' ).join;
+
 exports.debug = true;
 
 exports.port = 8080;
 
-exports.screenshoterPath = '../screenshoter/screenShoter.py';
+exports.screenshoterPath = join( __dirname, '../screenshooter/screenShooter.py' );
 
 exports.screenshoterInterval = 20 * 60 * 1000;
 
