@@ -18,6 +18,7 @@ exports.screenshotDir = join( __dirname, '../ScreenShots' );
 exports.route = {
     INDEX: '/',
     DEVICE_SCREENSHOT: '/device/:name/screenshot',
+    COLLECT_SCREENSHOTS: '/collect',
     LOG: '/log',
     PUBLIC: '/public',
     PUBLIC_CSS: '/public/css'

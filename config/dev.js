@@ -11,7 +11,7 @@ exports.port = 8080;
 
 exports.screenshoterPath = join( __dirname, '../screenshooter/screenShooter.py' );
 
-exports.screenshoterInterval = 20 * 60 * 1000;
+exports.screenshoterInterval = 60 * 60 * 1000;
 
 exports.stdoutPath = '../stdout.log';
 

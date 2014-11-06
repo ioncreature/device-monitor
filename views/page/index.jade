@@ -3,6 +3,12 @@
 
 extends ../layout
 
+block header-buttons
+    if isRunning
+        span.badge Collecting screenshots...
+    else
+        a.btn.btn-default(href=route.COLLECT_SCREENSHOTS) Collect screenshots
+
 block content
     each img, index in images
         if index % 6 === 0

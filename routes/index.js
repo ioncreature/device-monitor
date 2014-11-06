@@ -12,6 +12,7 @@ var router = require( 'express' ).Router(),
     join = require( 'path' ).join,
     httpError = require( '../lib/http-error' ),
     config = registry.get( 'config' ),
+    screenShooter = registry.get( 'screenShooter' ),
     route = config.route;
 
 module.exports = router;
@@ -28,12 +29,15 @@ router.get( route.INDEX, function( req, res ){
             var now = Date.now();
             res.render( 'page/index', {
                 pageName: 'index',
-                images: stats.map( function( stat, i ){
+                isRunning: screenShooter.isRunning(),
+                lastStart: new Date( screenShooter.start ),
+                lastSpent: screenShooter.start && screenShooter.finish && makeTime(screenShooter.finish - screenShooter.start),
+                    images: stats.map( function( stat, i ){
                     return {
                         name: list[i],
                         url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: list[i]} ),
                         elapsed: makeTime( now - stat.mtime.getTime() ),
-                        old: now - stat.mtime.getTime() > config.screenshoterInterval
+                        old: now - stat.mtime.getTime() > config.screenshoterInterval,
                     };
                 })
             });
@@ -55,6 +59,24 @@ router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
     }
     else
         next( new httpError.NotFound );
+});
+
+
+router.get( route.COLLECT_SCREENSHOTS, function( req, res, next ){
+    if ( !screenShooter.isRunning() ){
+        screenShooter.collect();
+        screenShooter.restartLoop();
+    }
+    res.redirect( route.INDEX );
+});
+
+
+router.get( route.LOG, function( req, res, next ){
+    res.render( 'page/log', {
+        pageName: 'log',
+        stdout: fs.readFileSync( config.stdoutPath ),
+        stderr: fs.readFileSync( config.stderrPath )
+    });
 });
 
 
