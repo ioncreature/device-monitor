@@ -19,7 +19,7 @@ simplateSshCommands = [
 ]
 
 simplateScpCommands = [
-    ('#remote#:/home/ifree/deployment/1.tga', './ScreenShots/#name#')
+    ('#remote#:/home/ifree/deployment/1.png', './ScreenShots/#name#')
     #('../xshot', '#remote#:/home/ifree/deployment/')
 ]
 
