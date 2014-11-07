@@ -23,7 +23,7 @@ router.get( route.INDEX, function( req, res ){
 
     async.map( list,
         function( item, cb ){
-            fs.stat( join(config.screenshotDir, item), cb );
+            fs.stat( join(config.screenshotDir, item, '1.png'), cb );
         },
         function( error, stats ){
             var now = Date.now();
