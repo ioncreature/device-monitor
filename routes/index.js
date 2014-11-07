@@ -19,30 +19,30 @@ module.exports = router;
 
 
 router.get( route.INDEX, function( req, res ){
-    var list = fs.readdirSync( config.screenshotDir );
+    var now = Date.now(),
+        list = fs.readdirSync( config.screenshotDir ),
+        images = list.map( function( name ){
+            var path = join( config.screenshotDir, name, '1.png' ),
+                exists = fs.existsSync( path ),
+                stat = exists && fs.statSync( path ),
+                isOld = exists ? now - stat.mtime.getTime() > config.screenshoterInterval : false;
 
-    async.map( list,
-        function( item, cb ){
-            fs.stat( join(config.screenshotDir, item, '1.png'), cb );
-        },
-        function( error, stats ){
-            var now = Date.now();
-            res.render( 'page/index', {
-                pageName: 'index',
-                isRunning: screenShooter.isRunning(),
-                lastStart: new Date( screenShooter.start ),
-                lastSpent: screenShooter.start && screenShooter.finish && makeTime(screenShooter.finish - screenShooter.start),
-                    images: stats.map( function( stat, i ){
-                    return {
-                        name: list[i],
-                        url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: list[i]} ),
-                        elapsed: makeTime( now - stat.mtime.getTime() ),
-                        old: now - stat.mtime.getTime() > config.screenshoterInterval,
-                    };
-                })
-            });
-        }
-    );
+            return {
+                name: name,
+                haveScreenshot: exists,
+                url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: name} ),
+                elapsed: exists ? makeTime( now - stat.mtime.getTime() ) : 'unknown',
+                state: exists ? (isOld ? 'old' : 'ok') : 'no-screenshot'
+            };
+        });
+
+    res.render( 'page/index', {
+        pageName: 'index',
+        isRunning: screenShooter.isRunning(),
+        lastStart: new Date( screenShooter.start ),
+        lastSpent: screenShooter.start && screenShooter.finish && makeTime(screenShooter.finish - screenShooter.start),
+        images: images
+    });
 });
 
 
