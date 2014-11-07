@@ -10,6 +10,7 @@ var router = require( 'express' ).Router(),
     util = require( '../lib/util' ),
     async = require( 'async' ),
     join = require( 'path' ).join,
+    basename = require( 'path' ).basename,
     httpError = require( '../lib/http-error' ),
     config = registry.get( 'config' ),
     screenShooter = registry.get( 'screenShooter' ),
@@ -39,8 +40,8 @@ router.get( route.INDEX, function( req, res ){
     res.render( 'page/index', {
         pageName: 'index',
         isRunning: screenShooter.isRunning(),
-        lastStart: new Date( screenShooter.start ),
-        lastSpent: screenShooter.start && screenShooter.finish && makeTime(screenShooter.finish - screenShooter.start),
+        lastStart: screenShooter.start ? makeTime( Date.now() - screenShooter.start ) : '-',
+        nextRunIn: screenShooter.loopStarted() && makeTime( screenShooter.whenNextLoop() - Date.now() ),
         images: images
     });
 });
@@ -54,7 +55,7 @@ router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
 
     if ( fileName ){
         res.type( mime.lookup(fileName) );
-        res.set( 'Content-Disposition', 'filename="' + fileName + '"' );
+        res.set( 'Content-Disposition', 'filename="' + basename(fileName) + '"' );
         res.send( fs.readFileSync(fileName) );
     }
     else
@@ -84,5 +85,6 @@ function makeTime( time ){
     var hours = Math.floor( time/ (3600 * 1000) ),
         minutes = Math.floor( time % (3600 * 1000) / (60 * 1000) ),
         seconds = Math.floor( time % (3600 * 1000) % (60 * 1000) / 1000 );
-    return hours + 'h ' + minutes + 'm ' + seconds + 's'
+
+    return (hours ? hours + 'h ' : '') + minutes + 'm ' + seconds + 's'
 }

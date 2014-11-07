@@ -8,6 +8,7 @@ block header-buttons
         span.badge Collecting screenshots...
     else
         a.btn.btn-default(href=route.COLLECT_SCREENSHOTS) Collect screenshots
+    .label.label-info last run #{lastStart} ago, next run in #{nextRunIn}
 
 block content
     each img, index in images

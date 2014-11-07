@@ -27,7 +27,8 @@ var ScreenShooter = require( './lib/ScreenShooter' ),
     screenShooter = new ScreenShooter({
         stdoutPath: config.stdoutPath,
         stderrPath: config.stderrPath,
-        screenshoterPath: config.screenshoterPath
+        screenshoterPath: config.screenshoterPath,
+        loopInterval: config.screenshoterInterval
     });
 registry.set( 'screenShooter', screenShooter );
 
@@ -39,7 +40,7 @@ if ( program.screenshot ){
     });
 }
 else {
-    screenShooter.startLoop( config.screenshoterInterval );
+    screenShooter.startLoop();
     var server = require( './lib/webServer' );
     server( function( error ){
         if ( error )
