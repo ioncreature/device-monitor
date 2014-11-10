@@ -5,10 +5,11 @@ extends ../layout
 
 block header-buttons
     if isRunning
-        span.badge Collecting screenshots...
+        .label.label-info Collecting screenshots...
     else
         a.btn.btn-default(href=route.COLLECT_SCREENSHOTS) Collect screenshots
-    .label.label-info last run #{lastStart} ago, next run in #{nextRunIn}
+    .label.label-info next run in #{nextRunIn}
+    .label.label-info last run #{lastStart} ago
 
 block content
     each img, index in images
@@ -21,7 +22,8 @@ block content
                                 if img.haveScreenshot
                                     .right= img.elapsed
                             if img.haveScreenshot
-                                img.img-responsive(src=img.url)
+                                a(href=img.url)
+                                    img.img-responsive(src=img.url)
                             else
                                 .center
                                     span.label.label-warning no screenshot
