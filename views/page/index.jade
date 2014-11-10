@@ -5,7 +5,7 @@ extends ../layout
 
 block header-buttons
     if isRunning
-        .label.label-info Collecting screenshots...
+        .label.label-info collecting screenshots...
     else
         a.btn.btn-default(href=route.COLLECT_SCREENSHOTS) Collect screenshots
     .label.label-info next run in #{nextRunIn}
@@ -22,7 +22,7 @@ block content
                                 if img.haveScreenshot
                                     .right= img.elapsed
                             if img.haveScreenshot
-                                a(href=img.url)
+                                a(href=img.url, target='_blank')
                                     img.img-responsive(src=img.url)
                             else
                                 .center
