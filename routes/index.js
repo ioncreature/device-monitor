@@ -22,11 +22,19 @@ module.exports = router;
 router.get( route.INDEX, function( req, res ){
     var now = Date.now(),
         list = fs.readdirSync( config.screenshotDir ),
+        oldCount = 0,
+        noImageCount = 0,
         images = list.map( function( name ){
             var path = join( config.screenshotDir, name, '1.png' ),
                 exists = fs.existsSync( path ),
                 stat = exists && fs.statSync( path ),
                 isOld = exists ? now - stat.mtime.getTime() > config.screenshoterInterval : false;
+
+            if ( isOld )
+                oldCount ++;
+
+            if ( !exists )
+                noImageCount ++;
 
             return {
                 name: name,
@@ -44,12 +52,8 @@ router.get( route.INDEX, function( req, res ){
         lastStart: screenShooter.start ? makeTime( Date.now() - screenShooter.start ) : '-',
         nextRunIn: screenShooter.loopStarted() && makeTime( screenShooter.whenNextLoop() - Date.now() ),
         totalCount: images.length,
-        oldCount: images.reduce( function( sum, image ){
-            return image.isOld ? sum + 1 : sum;
-        }, 0 ),
-        noImageCount: images.reduce( function( sum, image ){
-            return image.haveScreenshot ? sum + 1 : sum;
-        }, 0 ),
+        oldCount: oldCount,
+        noImageCount: noImageCount,
         images: images
     });
 });
