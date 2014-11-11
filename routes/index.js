@@ -33,7 +33,8 @@ router.get( route.INDEX, function( req, res ){
                 haveScreenshot: exists,
                 url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: name} ),
                 elapsed: exists ? makeTime( now - stat.mtime.getTime() ) : 'unknown',
-                state: exists ? (isOld ? 'old' : 'ok') : 'no-screenshot'
+                state: exists ? (isOld ? 'old' : 'ok') : 'no-screenshot',
+                isOld: isOld
             };
         });
 
@@ -42,6 +43,13 @@ router.get( route.INDEX, function( req, res ){
         isRunning: screenShooter.isRunning(),
         lastStart: screenShooter.start ? makeTime( Date.now() - screenShooter.start ) : '-',
         nextRunIn: screenShooter.loopStarted() && makeTime( screenShooter.whenNextLoop() - Date.now() ),
+        totalCount: images.length,
+        oldCount: images.reduce( function( sum, image ){
+            return image.isOld ? sum + 1 : sum;
+        }, 0 ),
+        noImageCount: images.reduce( function( sum, image ){
+            return image.haveScreenshot ? sum + 1 : sum;
+        }, 0 ),
         images: images
     });
 });

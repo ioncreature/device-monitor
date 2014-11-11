@@ -10,6 +10,10 @@ block header-buttons
         a.btn.btn-default(href=route.COLLECT_SCREENSHOTS) Collect screenshots
     .label.label-info next run in #{nextRunIn}
     .label.label-info last run #{lastStart} ago
+    if oldCount > 0
+        .label.label-danger #{oldCount} old screenshots
+    if noImageCount > 0
+        .label.label-warning #{noImageCount} devices without screenshots
 
 block content
     each img, index in images
