@@ -28,7 +28,7 @@ router.get( route.INDEX, function( req, res ){
             var path = join( config.screenshotDir, name, '1.png' ),
                 exists = fs.existsSync( path ),
                 stat = exists && fs.statSync( path ),
-                isOld = exists ? now - stat.mtime.getTime() > config.screenshoterInterval : false;
+                isOld = exists ? now - stat.mtime.getTime() > config.obsoleteTime : false;
 
             if ( isOld )
                 oldCount ++;

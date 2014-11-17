@@ -15,6 +15,8 @@ exports.screenshoterInterval = 60 * 60 * 1000;
 
 exports.screenshoterTimeout = 59 * 60 * 1000;
 
+exports.screenshoterObsoleteTime = 90 * 60 * 1000;
+
 exports.stdoutPath = '../stdout.log';
 
 exports.stderrPath = '../stderr.log';
