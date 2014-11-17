@@ -13,6 +13,8 @@ exports.screenshoterPath = join( __dirname, '../../newScripts/screenShooter.py' 
 
 exports.screenshoterInterval = 60 * 60 * 1000;
 
+exports.screenshoterTimeout = 59 * 60 * 1000;
+
 exports.stdoutPath = '../stdout.log';
 
 exports.stderrPath = '../stderr.log';

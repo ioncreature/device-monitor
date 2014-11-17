@@ -28,7 +28,8 @@ var ScreenShooter = require( './lib/ScreenShooter' ),
         stdoutPath: config.stdoutPath,
         stderrPath: config.stderrPath,
         screenshoterPath: config.screenshoterPath,
-        loopInterval: config.screenshoterInterval
+        loopInterval: config.screenshoterInterval,
+        timeout: config.screenshoterTimeout
     });
 registry.set( 'screenShooter', screenShooter );
 
