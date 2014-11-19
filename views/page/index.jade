@@ -3,6 +3,9 @@
 
 extends ../layout
 
+block scripts
+    script(src='/public/js//indexPage.js')
+
 block header-buttons
     if isRunning
         .label.label-primary collecting screenshots...
@@ -23,8 +26,9 @@ block content
             .row
                 each img in images.slice(index, index + 6)
                     .col-sm-2
-                        div.block(class=img.state)
-                            h4= img.name
+                        div.block(class=img.state, )
+                            h4
+                                a(href='#', data-toggle='modal' data-target='#device-modal', data-json=JSON.stringify(img))= img.name
                                 if img.haveScreenshot
                                     .right= img.elapsed
                             if img.haveScreenshot
@@ -33,3 +37,22 @@ block content
                             else
                                 .center
                                     span.label.label-warning no screenshot
+                            .so-well= img.comment ? img.comment : ''
+
+    #device-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='device-modal-label', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal')
+                        span(aria-hidden='true') ×
+                        span.sr-only Close
+                    h4#device-modal-label.modal-title Modal title
+                .modal-body
+                    h4 Screenshot
+                    img#full-image.img-responsive
+                    h4 Comment
+                    textarea#modal-comment.form-control
+                .modal-footer
+                    button#delete-data.btn.btn-danger(type='button') Delete screenshot
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close
+                    button#save-comment.btn.btn-primary(type='button') Save

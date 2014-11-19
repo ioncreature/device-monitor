@@ -10,6 +10,7 @@
         "serve-favicon": "*",
         "morgan": "1.4.x",
         "mime": "*",
+        "rimraf": "2.x.x",
         "commander": "2.5.x",
         "jade": "1.7.x",
         "less-middleware": "1.0.x",

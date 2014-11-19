@@ -5,6 +5,7 @@
 
 var router = require( 'express' ).Router(),
     fs = require( 'fs' ),
+    rimraf = require( 'rimraf' ),
     mime = require( 'mime' ),
     registry = require( '../lib/registry' ),
     util = require( '../lib/util' ),
@@ -26,7 +27,10 @@ router.get( route.INDEX, function( req, res ){
         noImageCount = 0,
         images = list.map( function( name ){
             var path = join( config.screenshotDir, name, '1.png' ),
+                commentPath = join( config.screenshotDir, name, 'comment' ),
                 exists = fs.existsSync( path ),
+                commendExists = fs.existsSync( commentPath ),
+                comment = commendExists ? fs.readFileSync( commentPath, {encoding: 'utf8'} ) : false,
                 stat = exists && fs.statSync( path ),
                 isOld = exists ? now - stat.mtime.getTime() > config.screenshoterObsoleteTime : false;
 
@@ -41,6 +45,7 @@ router.get( route.INDEX, function( req, res ){
                 haveScreenshot: exists,
                 url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: name} ),
                 elapsed: exists ? makeTime( now - stat.mtime.getTime() ) : 'unknown',
+                comment: comment,
                 state: exists ? (isOld ? 'old' : 'ok') : 'no-screenshot',
                 isOld: isOld
             };
@@ -75,6 +80,30 @@ router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
 });
 
 
+router.post( route.DEVICE, function( req, res ){
+    var name = req.params.name,
+        comment = req.body.comment,
+        path = join( config.screenshotDir, name ),
+        exists = fs.existsSync( path );
+
+    if ( exists )
+        fs.writeFileSync( join(path, 'comment'), comment, {encoding: 'utf8'} );
+    res.json( 'ok' );
+});
+
+router.delete( route.DEVICE, function( req, res, next ){
+    var name = req.params.name,
+        path = join( config.screenshotDir, name );
+
+    rimraf( path, function( error ){
+        if ( error )
+            next( error );
+        else
+            res.json( 'ok' );
+    });
+});
+
+
 router.get( route.COLLECT_SCREENSHOTS, function( req, res, next ){
     if ( !screenShooter.isRunning() ){
         screenShooter.collect();
@@ -84,7 +113,7 @@ router.get( route.COLLECT_SCREENSHOTS, function( req, res, next ){
 });
 
 
-router.get( route.LOG, function( req, res, next ){
+router.get( route.LOG, function( req, res ){
     res.render( 'page/log', {
         pageName: 'log',
         stdout: fs.readFileSync( config.stdoutPath ),
@@ -94,9 +123,10 @@ router.get( route.LOG, function( req, res, next ){
 
 
 function makeTime( time ){
-    var hours = Math.floor( time/ (3600 * 1000) ),
+    var days = Math.floor( time / (24 * 3600 * 1000) ),
+        hours = Math.floor( time % (24 * 3600 * 1000) / (3600 * 1000) ),
         minutes = Math.floor( time % (3600 * 1000) / (60 * 1000) ),
         seconds = Math.floor( time % (3600 * 1000) % (60 * 1000) / 1000 );
 
-    return (hours ? hours + 'h ' : '') + minutes + 'm ' + seconds + 's'
+    return (days ? days + 'd ' : '') + (hours ? hours + 'h ' : '') + minutes + 'm ' + seconds + 's';
 }
