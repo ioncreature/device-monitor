@@ -28,6 +28,8 @@ block content
                     .col-sm-2
                         div.block(class=img.state, data-toggle='modal' data-target='#device-modal', data-json=JSON.stringify(img))
                             h4= img.name
+                                if img.isProcessing
+                                    span.glyphicon.glyphicon-refresh.gly-spin
                                 if img.haveScreenshot
                                     .right= img.elapsed
                             if img.haveScreenshot
