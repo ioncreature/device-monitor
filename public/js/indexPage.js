@@ -6,18 +6,20 @@
 $( function(){
     var modal = $( '#device-modal' ),
         modalTitle = modal.find( '.modal-title' ),
-        modalImage = modal.find( 'img' ),
+        modalAnchor = modal.find( '#full-image' ),
+        modalImage = modal.find( '#full-image > img' ),
         modalComment = modal.find( '#modal-comment' ),
         modalSave = modal.find( '#save-comment' ),
-        anchors = $( 'div.block > h4 > a' ),
+        modalDelete = modal.find( '#delete-data' ),
+        blocks = $( 'div.block' ),
         data,
-        anchor;
+        block;
 
-    anchors.click( function(){
+    blocks.click( function(){
         try {
             data = JSON.parse( $(this).attr('data-json') );
             fillModal( data );
-            anchor = $( this );
+            block = $( this );
         }
         catch( e ){
             console.error( 'Unable to parse json', data );
@@ -34,16 +36,25 @@ $( function(){
         });
         modal.modal( 'hide' );
         data.comment = comment;
-        anchor.attr( 'data-json', JSON.stringify(data) );
-        anchor.parents( 'div.block' ).find( '.so-well' ).html( comment );
+        block.attr( 'data-json', JSON.stringify(data) );
+        block.find( '.so-well' ).html( comment );
+    });
+
+
+    modalDelete.click( function(){
+        $.ajax({
+            url: '/device/' + data.name,
+            method: 'DELETE'
+        }).then( function(){
+            window.location.reload();
+        });
     });
 
 
     function fillModal( data ){
-        console.log( data );
-
         modalTitle.text( data.name + ' (last update ' + data.elapsed + ' ago)' );
-        modalImage.attr( 'src', data.url     );
+        modalImage.attr( 'src', data.url );
+        modalAnchor.attr( 'href', data.url );
         modalComment.val( data.comment || '' );
     }
 });
