@@ -43,11 +43,12 @@ router.get( route.INDEX, function( req, res ){
             return {
                 name: name,
                 haveScreenshot: exists,
-                url: util.formatUrl( route.DEVICE_SCREENSHOT, {name: name} ),
+                url: util.formatUrl( route.DEVICE_GET_SCREENSHOT, {name: name} ),
                 elapsed: exists ? makeTime( now - stat.mtime.getTime() ) : 'unknown',
                 comment: comment,
                 state: exists ? (isOld ? 'old' : 'ok') : 'no-screenshot',
-                isOld: isOld
+                isOld: isOld,
+                isProcessing: screenShooter.isRunning( name )
             };
         });
 
@@ -64,7 +65,7 @@ router.get( route.INDEX, function( req, res ){
 });
 
 
-router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
+router.get( route.DEVICE_GET_SCREENSHOT, function( req, res, next ){
     var name = req.params.name,
         path = join( config.screenshotDir, name ),
         files = fs.readdirSync( path ),
@@ -77,6 +78,13 @@ router.get( route.DEVICE_SCREENSHOT, function( req, res, next ){
     }
     else
         next( new httpError.NotFound );
+});
+
+
+router.get( route.DEVICE_MAKE_SCREENSHOT, function( req, res, next ){
+    var name = req.params.name;
+    screenShooter.makeForDevice( name, util.noop );
+    res.json( 'ok' );
 });
 
 
@@ -128,5 +136,7 @@ function makeTime( time ){
         minutes = Math.floor( time % (3600 * 1000) / (60 * 1000) ),
         seconds = Math.floor( time % (3600 * 1000) % (60 * 1000) / 1000 );
 
-    return (days ? days + 'd ' : '') + (hours ? hours + 'h ' : '') + minutes + 'm ' + seconds + 's';
+    return (days ? days + 'd ' : '') +
+        (hours ? hours + 'h ' : '') + minutes + 'm ' +
+        (days ? '' : seconds + 's');
 }

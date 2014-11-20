@@ -18,7 +18,8 @@ exports.screenshotDir = join( __dirname, '../ScreenShots' );
 exports.route = {
     INDEX: '/',
     DEVICE: '/device/:name',
-    DEVICE_SCREENSHOT: '/device/:name/screenshot',
+    DEVICE_MAKE_SCREENSHOT: '/device/:name/shoot',
+    DEVICE_GET_SCREENSHOT: '/device/:name/screenshot',
     COLLECT_SCREENSHOTS: '/collect',
     LOG: '/log',
     PUBLIC: '/public',

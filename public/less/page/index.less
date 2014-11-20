@@ -20,7 +20,7 @@ body.index {
 
     .block {
         cursor: pointer;
-        padding: 4px;
+        padding: 4px 4px 1px;
         margin: 0 0 30px 0;
         background-color: @color-light-grey;
         &.old {
@@ -28,6 +28,9 @@ body.index {
         }
         &.no-screenshot {
             background-color: @color-light-orange;
+        }
+        img {
+            margin-bottom: 3px;
         }
     }
 
@@ -43,6 +46,12 @@ body.index {
         font-size: 0.8em;
         color: lighten(@color-text, 15%);
         font-style: italic;
-        padding: 5px 0 0;
+        margin-bottom: 2px;
+    }
+
+    #status-container {
+        .label {
+            margin-right: 10px;
+        }
     }
 }

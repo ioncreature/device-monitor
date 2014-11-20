@@ -46,12 +46,19 @@ block content
                         span.sr-only Close
                     h4#device-modal-label.modal-title Modal title
                 .modal-body
-                    h4 Screenshot
-                    a#full-image(href='#', target='_blank')
-                        img.img-responsive
+                    #status-container
+                        #last-update.label.label-default last update unknown
+                        #is-old.label.label-danger old screenshot
+                        #no-screenshot.label.label-warning no screenshot
+                        #is-processing.label.label-success screenshooting now
+                    #image-container
+                        h4 Screenshot
+                        a#full-image(href='#', target='_blank')
+                            img.img-responsive
                     h4 Comment
                     textarea#modal-comment.form-control
                 .modal-footer
-                    button#delete-data.btn.btn-danger(type='button') Delete screenshot
+                    button#delete-data.btn.btn-danger(type='button') Delete
                     button.btn.btn-default(type='button', data-dismiss='modal') Close
+                    button#make-screenshot.btn.btn-info(type='button') Make screenshot
                     button#save-comment.btn.btn-primary(type='button') Save
