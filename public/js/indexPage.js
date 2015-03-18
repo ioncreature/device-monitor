@@ -4,7 +4,8 @@
  */
 
 $( function(){
-    var modal = $( '#device-modal' ),
+    var RELOAD_TIMEOUT = 20 * 60 * 1000,
+        modal = $( '#device-modal' ),
         modalTitle = modal.find( '.modal-title' ),
         modalAnchor = modal.find( '#full-image' ),
         modalImage = modal.find( '#full-image > img' ),
@@ -21,6 +22,8 @@ $( function(){
         blocks = $( 'div.block' ),
         data,
         block;
+
+    setTimeout( reloadPage, RELOAD_TIMEOUT );
 
     blocks.click( function(){
         try {
@@ -88,5 +91,9 @@ $( function(){
             modalStatusNoScreenShot.show();
         if ( data.isOld )
             modalStatusOld.show();
+    }
+
+    function reloadPage(){
+        window.location.reload();
     }
 });
