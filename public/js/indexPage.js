@@ -56,7 +56,7 @@ $( function(){
             url: '/device/' + data.name,
             method: 'DELETE'
         }).then( function(){
-            window.location.reload();
+            reloadPage();
         });
     });
 
@@ -66,7 +66,7 @@ $( function(){
             url: '/device/' + data.name + '/shoot',
             method: 'GET'
         }).then( function(){
-            window.location.reload();
+            reloadPage();
         });
     });
 
